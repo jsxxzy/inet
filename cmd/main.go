@@ -115,8 +115,8 @@ func main() {
 			xTime, _ := strconv.Atoi(info.Time)
 			fmt.Println("使用时长: ", getHumanTime(xTime))
 			var flow = getHumanFlow(info.Flow)
-			fmt.Println("使用流量(mb): ", flow)
-			fmt.Println("用户id: ", info.UID)
+			fmt.Println("使用流量: ", flow)
+			fmt.Println("  用户id: ", info.UID)
 			fmt.Println("内网地址: ", info.V4ip)
 			break
 		case "logout": // 退出登录
