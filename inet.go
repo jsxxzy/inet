@@ -73,7 +73,7 @@ type QueryInfoData struct {
 	Time string
 
 	// Flow 流量
-	Flow int
+	Flow float64
 
 	// Xip 外网映射地址
 	Xip string
@@ -95,7 +95,6 @@ type LoginInfo struct {
 }
 
 func (L LoginInfo) Error() error {
-	fmt.Println("L.code", L.code)
 	switch L.code {
 	case ErrorUserAuthFailCode:
 		return ErrorUserAuthFail
@@ -321,14 +320,7 @@ func getJsCode(jQuery *goquery.Document) string {
 
 // 执行`js`拿到`data
 //
-// =======================
 //
-// 作者：na个饲养员
-// 链接：https://juejin.im/post/6844904002975432717
-// 来源：掘金
-// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-//
-// =======================
 func calljsGetInfo(jsCode string) (QueryInfoData, error) {
 	var code = jsCodeRemoveCommit(jsCode)
 	vm := js.New() // 创建engine实例
@@ -358,14 +350,17 @@ func calljsGetInfo(jsCode string) (QueryInfoData, error) {
 	// 已使用时间(分钟)
 	var time = strings.TrimSpace(vm.Get("time").String())
 
-	// 流量
-	var flow = strings.TrimSpace(vm.Get("flow").String())
+	// 流量(mb)
+	var flow float64 = 0
 
-	var flowInt, e = strconv.Atoi(flow)
+	v, e := vm.RunString("flow1/1024+flow3+flow0/1024")
 
 	if e != nil {
 		return QueryInfoData{}, errors.New("将流量值转为`int`失败")
 	}
+
+	num := v.Export().(string)
+	flow, _ = strconv.ParseFloat(num, 64)
 
 	// 未知字段
 	// var fsele = vm.Get("fsele").String()
@@ -395,7 +390,7 @@ func calljsGetInfo(jsCode string) (QueryInfoData, error) {
 		code:       ErrorLoginAuthCode,
 		Portalname: portalname,
 		Time:       time,
-		Flow:       flowInt,
+		Flow:       flow,
 		Xip:        xip,
 		UID:        uid,
 		V4ip:       v4ip,
