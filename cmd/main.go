@@ -112,6 +112,10 @@ func main() {
 				fmt.Println("查询信息失败")
 				return
 			}
+			if info.Error() != nil {
+				fmt.Println(info.Error())
+				return
+			}
 			xTime, _ := strconv.Atoi(info.Time)
 			fmt.Println("使用时长: ", getHumanTime(xTime))
 			var flow = getHumanFlow(info.Flow)
@@ -121,9 +125,9 @@ func main() {
 			break
 		case "logout": // 退出登录
 			err := inet.Logout()
-			var s = "已退出"
+			var s = "已注销"
 			if err != nil {
-				s = "退出错误, 未知错误"
+				s = "注销错误, 未知错误"
 			}
 			fmt.Println(s)
 			break
