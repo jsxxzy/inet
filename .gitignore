@@ -1,2 +1,6 @@
 *.html
 *.exe
+cmd/inetdaemon/inetd
+*runlog
+
+bindata.go
