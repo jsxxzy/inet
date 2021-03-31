@@ -75,8 +75,5 @@ if inet.HasLogin() {
   inet.Logout()
 }
 
-
-  ```
-
-![upload](https://i.loli.net/2020/10/28/wDsoYXupFA7f5aG.png)
+```
 
